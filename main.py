@@ -1,3 +1,11 @@
+###########################################################################
+# Name: Scott Ramroth
+# Date: March 17th, 2020
+# Email: sramroth@uccs.edu
+# Description: Testing and comparing runtimes between various string 
+# concatenation and list generating functions
+# Boilerplate code provided by Dr. Dana Wortman
+###########################################################################
 
 from functools import wraps
 from time import time
@@ -101,8 +109,7 @@ words = ["Fourscore and seven years ago our fathers brought forth,",
          "The brave men, living and dead, who struggled here, ",
          "have consecrated it far above our poor power to add or detract. "]
 
-# TODO: compare stringPercent, stringFormat, and stringF here
-# Use words as the list of words to format
+# Compare stringPercent, stringFormat, and stringF
 timeCompare([stringPercent, stringFormat, stringF], words)
 
 # Extra print to space out output
@@ -113,39 +120,55 @@ print()
 # Test List Building
 #######################################
 
-# TODO: complete the ListRangeObject Iterator Object
+# ListRangeObject Iterator Object
 class ListRangeObject:
-    pass
+    def __init__(self, nbrValues):
+        self.i = 0
+        self.nbrValues = nbrValues
 
-# TODO: complete the rangeGenerator Function
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.i < self.nbrValues:
+            self.i += 1
+            return self.i
+        else:
+            raise StopIteration()
+
+# Generates a list of a range
 def rangeGenerator(max):
-    pass
+    i = 0
+    while i < max:
+        i += 1
+        yield i
 
-# TODO: complete the listRange Function
+# Sums a list using the range function
+@timeIt
 def listRange(max):
-    pass
+    return sum(range(1, max + 1))
 
-# TODO: complete the listComprehension Function
+# Generates a sum with a list comprehension
+@timeIt
 def listComprehension(max):
-    pass
+    return sum([n for n in range(1, max + 1)])
 
-# TODO: complete the listIterator Function
+# Function implementation for the Iterator class
+@timeIt
 def listIterator(max):
-    pass
+    return sum(ListRangeObject(max))
 
-# TODO: complete the listIterator Function
+# Generates a list of values
+@timeIt
 def listGenerator(max):
-    pass
+    return sum(rangeGenerator(max))
 
-# TODO: complete the listExpression Function
+# Sums a list from a generator expression
+@timeIt
 def listExpression(max):
-    pass
+    return sum((n for n in range(1, max + 1)))
 
 max = 100
 
-# TODO: compare listRange, listIterator, listGenerator, and listExpression here
-# Use max as the number of items to generate
-
-print()
-
-
+# Compare the summing functions
+timeCompare([listRange, listComprehension, listIterator, listGenerator, listExpression], max)
